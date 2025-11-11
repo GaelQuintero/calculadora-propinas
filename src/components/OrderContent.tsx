@@ -1,10 +1,11 @@
-import type { OrderItem, MenuItem } from "../types";
+import type { OrderItem } from "../types";
 import { formatCurrency } from "../helpers";
+import type { OrderActions } from "../reducers/order-reducer";
 type OrderContentProps = {
   order: OrderItem[];
-  removeItem: (id: MenuItem['id']) => void
+  dispatch: React.ActionDispatch<[action: OrderActions]>;
 };
-const OrderContent = ({ order , removeItem }: OrderContentProps) => {
+const OrderContent = ({ order, dispatch }: OrderContentProps) => {
   return (
     <>
       <h2 className=" text-2xl font-bold mb-2 text-center">Consumo</h2>
@@ -13,7 +14,10 @@ const OrderContent = ({ order , removeItem }: OrderContentProps) => {
         {order.length > 0 ? (
           order.map((order) => {
             return (
-              <div key={order.id} className="flex justify-between items-center border-t border-gray-200 py-5 last-of-type:border-b">
+              <div
+                key={order.id}
+                className="flex justify-between items-center border-t border-gray-200 py-5 last-of-type:border-b"
+              >
                 <div>
                   <p className="font-light text-lg">
                     {order.name} -{" "}
@@ -32,7 +36,17 @@ const OrderContent = ({ order , removeItem }: OrderContentProps) => {
                 </div>
 
                 <div>
-                  <button onClick={() => removeItem(order.id)} className="bg-red-600 text-white px-5 py-1 rounded-md font-bold cursor-pointer hover:bg-red-700">Eliminar</button>
+                  <button
+                    onClick={() =>
+                      dispatch({
+                        type: "removeItem",
+                        payload: { id: order.id },
+                      })
+                    }
+                    className="bg-red-600 text-white px-5 py-1 rounded-md font-bold cursor-pointer hover:bg-red-700"
+                  >
+                    Eliminar
+                  </button>
                 </div>
               </div>
             );

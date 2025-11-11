@@ -6,13 +6,14 @@ Lo unico que cambia es la sintaxis
 import { useMemo } from "react";
 import { formatCurrency } from "../helpers";
 import type { OrderItem } from "../types";
+import type { OrderActions } from "../reducers/order-reducer";
 
 type OrderTotalsProps = {
   order: OrderItem[];
   tip: number;
-  sendOrder: () => void;
+ dispatch: React.ActionDispatch<[action: OrderActions]>
 };
-const OrdenTotals = ({ order, tip, sendOrder }: OrderTotalsProps) => {
+const OrdenTotals = ({ order, tip, dispatch }: OrderTotalsProps) => {
   //Reduce para acumular las propiedades del arreglo que desees
   const subtotalAmount = useMemo(
     () =>
@@ -47,7 +48,7 @@ const OrdenTotals = ({ order, tip, sendOrder }: OrderTotalsProps) => {
       </div>
 
       <button
-        onClick={() => sendOrder()}
+        onClick={() => dispatch({type:'sendOrder'})}
         className="bg-indigo-500 text-white  dark:bg-green-500 font-bold px-5 py-2 rounded-md text-xl w-full hover:bg-indigo-600 hover:dark:bg-green-600 cursor-pointer"
       >
         Guardar orden
